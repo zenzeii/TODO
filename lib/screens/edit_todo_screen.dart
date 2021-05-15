@@ -184,6 +184,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                     ),
                   ),
                 ),
+                /*
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -203,6 +204,8 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                     ),
                   ),
                 ),
+                 */
+
                 /*
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),

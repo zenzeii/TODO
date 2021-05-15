@@ -110,6 +110,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     validator: (input) => input.trim().isEmpty ? '' : null,
                     initialValue: _title,
                     onSaved: (input) => _title = input,
+                    textCapitalization: TextCapitalization.sentences,
                     style: GoogleFonts.poppins(fontSize: 18),
                     decoration: InputDecoration(
                       errorStyle: TextStyle(height: 0),

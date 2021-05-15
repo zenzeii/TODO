@@ -149,6 +149,8 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                   child: TextFormField(
                     validator: (input) => input.trim().isEmpty ? '' : null,
                     controller: _dateController,
+                    showCursor: true,
+                    readOnly: true,
                     onTap: _selectDate,
                     style: GoogleFonts.poppins(fontSize: 18),
                     decoration: InputDecoration(

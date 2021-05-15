@@ -224,19 +224,21 @@ class _TodoListScreenState extends State<TodoListScreen> {
               return _toDoTile(snapshot.data[index - 1], snapshot.data.length);
             },
             onReorder: (oldIndex, newIndex) => setState(() {
-              if (newIndex != 0) {
+              if (newIndex != 0 && oldIndex != 0) {
+                // because of header
                 oldIndex -= 1;
+                newIndex -= 1;
 
                 // drag down
                 if (newIndex > oldIndex) {
-                  newIndex -= 1;
+                  newIndex -= 0;
 
                   // new priority
-                  snapshot.data[oldIndex].priority = newIndex;
+                  snapshot.data[oldIndex].priority = newIndex + 1;
                   DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
 
                   // others one to the top
-                  for (int i = oldIndex + 1; i < newIndex; i++) {
+                  for (int i = oldIndex + 1; i < newIndex + 1; i++) {
                     snapshot.data[i].priority = i;
                     DatabaseHelper.instance.updateTodo(snapshot.data[i]);
                   }
@@ -245,18 +247,18 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 // drag up
                 if (oldIndex > newIndex) {
                   // others one to the bot
-                  for (int i = newIndex - 1; i < oldIndex + 1; i++) {
+                  for (int i = newIndex; i < oldIndex + 1; i++) {
                     snapshot.data[i].priority = i + 2;
                     DatabaseHelper.instance.updateTodo(snapshot.data[i]);
                   }
                   // new priority
-                  snapshot.data[oldIndex].priority = newIndex;
+                  snapshot.data[oldIndex].priority = newIndex + 1;
                   DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
                 }
 
                 // this is to prevent to flicker (reset positions until updateTODOList)
                 final tile = snapshot.data.removeAt(oldIndex);
-                snapshot.data.insert(newIndex - 1, tile);
+                snapshot.data.insert(newIndex, tile);
 
                 _updateTodoList();
               }

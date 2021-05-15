@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:TODO/helpers/database_helper.dart';
 import 'package:TODO/models/todo_models.dart';
 import 'package:TODO/screens/about_screen.dart';
@@ -17,7 +18,6 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
   Future<List<Todo>> _todoList;
-  List<Todo> listOfSelected = [];
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
   bool deleteMode = false;
 
@@ -39,8 +39,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
     });
   }
 
-  Widget _ToDoTile(Todo todo) {
+  Widget _toDoTile(Todo todo) {
     return Padding(
+      key: ValueKey(todo),
       padding: const EdgeInsets.symmetric(vertical: 1.0),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 40),
@@ -51,7 +52,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
           ),
         ),
         subtitle: Text(
-          _dateFormatter.format(todo.date),
+          _dateFormatter.format(todo.date) +
+              ' • Position ' +
+              todo.priority.toString(),
           style: GoogleFonts.poppins(),
         ),
         trailing: deleteMode
@@ -84,11 +87,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 EditTodoScreen(updateTodoList: _updateTodoList, todo: todo),
           ),
         ),
-        onLongPress: () {
-          setState(() {
-            deleteMode = !deleteMode;
-          });
-        },
       ),
     );
   }
@@ -100,16 +98,74 @@ class _TodoListScreenState extends State<TodoListScreen> {
         future: _todoList,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 40.0, vertical: 80),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => AboutScreen(),
+                          ),
+                        ),
+                        child: Text(
+                          "TODO",
+                          style: GoogleFonts.poppins(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(child: SizedBox()),
+                      IconButton(
+                        icon: deleteMode
+                            ? Icon(
+                                Icons.check,
+                                color: Colors.green,
+                              )
+                            : Icon(
+                                Icons.add,
+                                color: Colors.blue,
+                              ),
+                        onPressed: () => deleteMode
+                            ? _toggleDeleteMode()
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => AddTodoScreen(
+                                    updateTodoList: _updateTodoList,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: AlignmentDirectional.center,
+                      height: double.infinity,
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                ],
+              ),
+            );
           }
 
-          return ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 80),
+          return ReorderableListView.builder(
+            padding: EdgeInsets.symmetric(),
             itemCount: 1 + snapshot.data.length,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  key: ValueKey(0),
+                  padding:
+                      const EdgeInsets.only(left: 40.0, right: 40.0, top: 80),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
@@ -148,6 +204,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                     MaterialPageRoute(
                                       builder: (_) => AddTodoScreen(
                                         updateTodoList: _updateTodoList,
+                                        todoListLen: snapshot.data.length,
                                       ),
                                     ),
                                   ),
@@ -161,8 +218,46 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   ),
                 );
               }
-              return _ToDoTile(snapshot.data[index - 1]);
+              return _toDoTile(snapshot.data[index - 1]);
             },
+            onReorder: (oldIndex, newIndex) => setState(() {
+              if (newIndex != 0) {
+                oldIndex -= 1;
+
+                // drag down
+                if (newIndex > oldIndex) {
+                  newIndex -= 1;
+
+                  // new priority
+                  snapshot.data[oldIndex].priority = newIndex;
+                  DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
+
+                  // others one to the top
+                  for (int i = oldIndex + 1; i < newIndex; i++) {
+                    snapshot.data[i].priority = i;
+                    DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                  }
+                }
+
+                // drag up
+                if (oldIndex > newIndex) {
+                  // others one to the bot
+                  for (int i = newIndex - 1; i < oldIndex + 1; i++) {
+                    snapshot.data[i].priority = i + 2;
+                    DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                  }
+                  // new priority
+                  snapshot.data[oldIndex].priority = newIndex;
+                  DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
+                }
+
+                // this is to prevent to flicker (reset positions until updateTODOList)
+                final tile = snapshot.data.removeAt(oldIndex);
+                snapshot.data.insert(newIndex - 1, tile);
+
+                _updateTodoList();
+              }
+            }),
           );
         },
       ),

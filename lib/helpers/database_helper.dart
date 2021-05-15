@@ -17,6 +17,7 @@ class DatabaseHelper {
   String colTitle = 'title';
   String colDate = 'date';
   String colStatus = 'status';
+  String colPriority = 'priority';
 
   Future<Database> get db async {
     if (_db == null) {
@@ -35,7 +36,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE $todoTables($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT, $colStatus INTEGER)');
+        'CREATE TABLE $todoTables($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT, $colStatus INTEGER, $colPriority INTEGER)');
   }
 
   Future<List<Map<String, dynamic>>> gettodoMapList() async {
@@ -44,13 +45,18 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<int> getLenList() async {
+    final List<Map<String, dynamic>> todoMapList = await gettodoMapList();
+    return todoMapList.length;
+  }
+
   Future<List<Todo>> getTodoList() async {
     final List<Map<String, dynamic>> todoMapList = await gettodoMapList();
     final List<Todo> todoList = [];
     todoMapList.forEach((todoMap) {
       todoList.add(Todo.fromMap(todoMap));
     });
-    todoList.sort((a, b) => a.date.compareTo(b.date));
+    todoList.sort((a, b) => a.priority.compareTo(b.priority));
     return todoList;
   }
 

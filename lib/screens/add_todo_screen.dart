@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 
 class AddTodoScreen extends StatefulWidget {
   final Function updateTodoList;
+  final int todoListLen;
 
-  const AddTodoScreen({Key key, this.updateTodoList});
+  const AddTodoScreen({Key key, this.updateTodoList, this.todoListLen});
 
   @override
   _AddTodoScreenState createState() => _AddTodoScreenState();
@@ -38,12 +39,17 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
 
   _submit() {
     if (_formkey.currentState.validate()) {
-      _formkey.currentState.save();
-
-      Todo todo = Todo(title: _title, date: _date, status: 0);
-      DatabaseHelper.instance.insertTodo(todo);
-      widget.updateTodoList();
-      Navigator.pop(context);
+      setState(() {
+        _formkey.currentState.save();
+        Todo todo = Todo(
+            title: _title,
+            date: _date,
+            status: 0,
+            priority: widget.todoListLen + 1);
+        DatabaseHelper.instance.insertTodo(todo);
+        widget.updateTodoList();
+        Navigator.pop(context);
+      });
     }
   }
 
@@ -128,7 +134,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       labelStyle: GoogleFonts.poppins(),
                       labelText: 'Deadline',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(08),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),

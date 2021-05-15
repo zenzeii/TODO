@@ -54,6 +54,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
       Todo todo = Todo(title: _title, date: _date);
       todo.id = widget.todo.id;
       todo.status = widget.todo.status;
+      todo.priority = widget.todo.priority;
       DatabaseHelper.instance.updateTodo(todo);
       widget.updateTodoList();
       Navigator.pop(context);

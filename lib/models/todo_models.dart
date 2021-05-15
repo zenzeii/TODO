@@ -3,16 +3,20 @@ class Todo {
   String title;
   DateTime date;
   int status;
+  int priority;
 
-  Todo({this.title, this.date, this.status});
-  Todo.withId({this.id, this.title, this.date, this.status});
+  Todo({this.title, this.date, this.status, this.priority});
+  Todo.withId({this.id, this.title, this.date, this.status, this.priority});
 
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();
-    map['id'] = id;
+    if (id != null) {
+      map['id'] = id;
+    }
     map['title'] = title;
     map['date'] = date.toIso8601String();
     map['status'] = status;
+    map['priority'] = priority;
     return map;
   }
 
@@ -22,6 +26,7 @@ class Todo {
       title: map['title'],
       date: DateTime.parse(map['date']),
       status: map['status'],
+      priority: map['priority'],
     );
   }
 }

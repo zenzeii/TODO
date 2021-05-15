@@ -152,6 +152,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                     validator: (input) => input.trim().isEmpty ? '' : null,
                     initialValue: _title,
                     onSaved: (input) => _title = input,
+                    autofocus: true,
                     textCapitalization: TextCapitalization.sentences,
                     style: GoogleFonts.poppins(fontSize: 18),
                     decoration: InputDecoration(

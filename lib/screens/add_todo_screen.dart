@@ -19,8 +19,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   String _title = '';
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
-
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController.text = _dateFormatter.format(_date);
+  }
 
   _selectDate() async {
     final DateTime date = await showDatePicker(

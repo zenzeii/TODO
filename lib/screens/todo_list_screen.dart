@@ -252,7 +252,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
                 // drag down
                 if (newIndex > oldIndex) {
-                  newIndex -= 0;
+                  newIndex -= 1;
 
                   // new priority
                   snapshot.data[oldIndex].priority = newIndex + 1;

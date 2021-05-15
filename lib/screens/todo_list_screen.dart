@@ -170,7 +170,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                               "If this doesn't end please delete app data.",
                               style: GoogleFonts.poppins(
                                 color: Colors.black,
-                                fontSize: 20,
+                                fontSize: 16,
                               ),
                             ),
                           ),

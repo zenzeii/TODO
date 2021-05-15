@@ -39,7 +39,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     });
   }
 
-  Widget _toDoTile(Todo todo) {
+  Widget _toDoTile(Todo todo, int listLen) {
     return Padding(
       key: ValueKey(todo),
       padding: const EdgeInsets.symmetric(vertical: 1.0),
@@ -83,8 +83,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) =>
-                EditTodoScreen(updateTodoList: _updateTodoList, todo: todo),
+            builder: (_) => EditTodoScreen(
+                updateTodoList: _updateTodoList,
+                todoListLen: listLen,
+                todo: todo),
           ),
         ),
       ),
@@ -139,6 +141,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 MaterialPageRoute(
                                   builder: (_) => AddTodoScreen(
                                     updateTodoList: _updateTodoList,
+                                    todoListLen: snapshot.data.length,
                                   ),
                                 ),
                               ),
@@ -218,7 +221,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   ),
                 );
               }
-              return _toDoTile(snapshot.data[index - 1]);
+              return _toDoTile(snapshot.data[index - 1], snapshot.data.length);
             },
             onReorder: (oldIndex, newIndex) => setState(() {
               if (newIndex != 0) {

@@ -1,14 +1,17 @@
 import 'package:TODO/helpers/database_helper.dart';
 import 'package:TODO/models/todo_models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class EditTodoScreen extends StatefulWidget {
   final Function updateTodoList;
   final Todo todo;
+  final int todoListLen;
 
-  const EditTodoScreen({Key key, this.todo, this.updateTodoList})
+  const EditTodoScreen(
+      {Key key, this.todo, this.updateTodoList, this.todoListLen})
       : super(key: key);
 
   @override
@@ -18,6 +21,7 @@ class EditTodoScreen extends StatefulWidget {
 class _EditTodoScreenState extends State<EditTodoScreen> {
   final _formkey = GlobalKey<FormState>();
   String _title = '';
+  int _priority;
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
@@ -28,6 +32,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     if (widget.todo != null) {
       _title = widget.todo.title;
       _date = widget.todo.date;
+      _priority = widget.todo.priority;
       _dateController.text = _dateFormatter.format(_date);
     }
   }
@@ -47,14 +52,23 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     }
   }
 
+  int _correctNewPriority(int newPrio) {
+    if (newPrio > widget.todoListLen) {
+      return widget.todoListLen;
+    }
+    if (newPrio < 0) {
+      return 0;
+    }
+  }
+
   _submit() {
     if (_formkey.currentState.validate()) {
       _formkey.currentState.save();
 
-      Todo todo = Todo(title: _title, date: _date);
+      Todo todo = Todo(
+          title: _title, date: _date, priority: _correctNewPriority(_priority));
       todo.id = widget.todo.id;
       todo.status = widget.todo.status;
-      todo.priority = widget.todo.priority;
       DatabaseHelper.instance.updateTodo(todo);
       widget.updateTodoList();
       Navigator.pop(context);
@@ -65,6 +79,13 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     DatabaseHelper.instance.deleteTodo(widget.todo.id);
     widget.updateTodoList();
     Navigator.pop(context);
+  }
+
+  bool _isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
   }
 
   @override
@@ -159,6 +180,25 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                       labelText: 'Deadline',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(08),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  child: TextFormField(
+                    validator: (input) => !_isNumeric(input) ? '' : null,
+                    initialValue: _priority.toString(),
+                    onSaved: (input) => _priority = int.parse(input),
+                    keyboardType: TextInputType.number,
+                    style: GoogleFonts.poppins(fontSize: 18),
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(height: 0),
+                      labelStyle: GoogleFonts.poppins(),
+                      labelText: 'Priority',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),

@@ -65,10 +65,10 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     if (_formkey.currentState.validate()) {
       _formkey.currentState.save();
 
-      Todo todo = Todo(
-          title: _title, date: _date, priority: _correctNewPriority(_priority));
+      Todo todo = Todo(title: _title, date: _date);
       todo.id = widget.todo.id;
       todo.status = widget.todo.status;
+      todo.priority = widget.todo.priority;
       DatabaseHelper.instance.updateTodo(todo);
       widget.updateTodoList();
       Navigator.pop(context);

@@ -141,7 +141,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 MaterialPageRoute(
                                   builder: (_) => AddTodoScreen(
                                     updateTodoList: _updateTodoList,
-                                    todoListLen: snapshot.data.length,
+                                    todoListLen: snapshot.hasData
+                                        ? snapshot.data.length
+                                        : 0,
                                   ),
                                 ),
                               ),
@@ -152,7 +154,28 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     child: Container(
                       alignment: AlignmentDirectional.center,
                       height: double.infinity,
-                      child: CircularProgressIndicator(),
+                      child: Column(
+                        children: [
+                          Expanded(child: Container()),
+                          CircularProgressIndicator(),
+                          Expanded(child: Container()),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 20),
+                            height: 60,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              "If this doesn't end please delete app data.",
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],

@@ -36,7 +36,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       IconButton(
                         icon: Icon(
                           Icons.close,
-                          color: Colors.red,
+                          color: Color(0xffff351a),
                         ),
                         onPressed: () => Navigator.pop(context),
                       ),

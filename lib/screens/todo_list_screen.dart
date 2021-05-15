@@ -70,6 +70,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   _updateTodoList();
                 })
             : Checkbox(
+                activeColor: Color(0xff3DDC84),
                 onChanged: (value) {
                   setState(() {
                     todo.status = value ? 1 : 0;
@@ -79,7 +80,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 },
                 value: todo.status == 1,
               ),
-        tileColor: Colors.green.withOpacity(0),
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
@@ -128,11 +128,11 @@ class _TodoListScreenState extends State<TodoListScreen> {
                         icon: deleteMode
                             ? Icon(
                                 Icons.check,
-                                color: Colors.green,
+                                color: Color(0xff3DDC84),
                               )
                             : Icon(
                                 Icons.add,
-                                color: Colors.blue,
+                                color: Colors.black,
                               ),
                         onPressed: () => deleteMode
                             ? _toggleDeleteMode()
@@ -219,11 +219,11 @@ class _TodoListScreenState extends State<TodoListScreen> {
                               icon: deleteMode
                                   ? Icon(
                                       Icons.check,
-                                      color: Colors.green,
+                                      color: Color(0xff3DDC84),
                                     )
                                   : Icon(
                                       Icons.add,
-                                      color: Colors.blue,
+                                      color: Colors.black,
                                     ),
                               onPressed: () => deleteMode
                                   ? _toggleDeleteMode()

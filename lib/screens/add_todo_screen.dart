@@ -84,14 +84,14 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                       IconButton(
                         icon: Icon(
                           Icons.close,
-                          color: Colors.red,
+                          color: Color(0xffff351a),
                         ),
                         onPressed: () => Navigator.pop(context),
                       ),
                       IconButton(
                         icon: Icon(
                           Icons.check,
-                          color: Colors.green,
+                          color: Color(0xff3DDC84),
                         ),
                         onPressed: _submit,
                       ),

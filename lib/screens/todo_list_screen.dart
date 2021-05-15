@@ -216,7 +216,28 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       ),
                       SizedBox(
                         height: 30,
-                      )
+                      ),
+                      snapshot.data.length == 0
+                          ? Container(
+                              alignment: AlignmentDirectional.center,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "• tap '+' to add new task \n"
+                                    "• tap task tile to edit task \n"
+                                    "• tap 'TODO' to learn about us \n"
+                                    "• tap & hold task tile to edit priority\n"
+                                    "• tap task tile checkbox to mark as done",
+                                    style: GoogleFonts.poppins(fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 );

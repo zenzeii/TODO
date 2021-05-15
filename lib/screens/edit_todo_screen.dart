@@ -56,8 +56,8 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     if (newPrio > widget.todoListLen) {
       return widget.todoListLen;
     }
-    if (newPrio < 0) {
-      return 0;
+    if (newPrio < 1) {
+      return 1;
     }
   }
 

@@ -123,7 +123,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                           ),
                         ),
                       ),
-                      Expanded(child: SizedBox()),
+                      Expanded(child: Container()),
                       IconButton(
                         icon: deleteMode
                             ? Icon(
@@ -213,27 +213,30 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             ),
                           ),
                           Expanded(child: SizedBox()),
-                          IconButton(
-                            icon: deleteMode
-                                ? Icon(
-                                    Icons.check,
-                                    color: Colors.green,
-                                  )
-                                : Icon(
-                                    Icons.add,
-                                    color: Colors.blue,
-                                  ),
-                            onPressed: () => deleteMode
-                                ? _toggleDeleteMode()
-                                : Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => AddTodoScreen(
-                                        updateTodoList: _updateTodoList,
-                                        todoListLen: snapshot.data.length,
+                          GestureDetector(
+                            onLongPress: _toggleDeleteMode,
+                            child: IconButton(
+                              icon: deleteMode
+                                  ? Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    )
+                                  : Icon(
+                                      Icons.add,
+                                      color: Colors.blue,
+                                    ),
+                              onPressed: () => deleteMode
+                                  ? _toggleDeleteMode()
+                                  : Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => AddTodoScreen(
+                                          updateTodoList: _updateTodoList,
+                                          todoListLen: snapshot.data.length,
+                                        ),
                                       ),
                                     ),
-                                  ),
+                            ),
                           ),
                         ],
                       ),
@@ -254,6 +257,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                     "• tap task tile to edit task \n"
                                     "• tap 'TODO' to learn about us \n"
                                     "• tap & hold task tile to edit priority\n"
+                                    "• tap & hold '+' to switch to delete mode\n"
                                     "• tap task tile checkbox to mark as done",
                                     style: GoogleFonts.poppins(fontSize: 16),
                                   ),

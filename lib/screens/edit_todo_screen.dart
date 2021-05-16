@@ -158,7 +158,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                     decoration: InputDecoration(
                       errorStyle: TextStyle(height: 0),
                       labelStyle: GoogleFonts.poppins(),
-                      labelText: 'Title',
+                      labelText: 'Task',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

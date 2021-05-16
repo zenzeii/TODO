@@ -121,7 +121,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     decoration: InputDecoration(
                       errorStyle: TextStyle(height: 0),
                       labelStyle: GoogleFonts.poppins(),
-                      labelText: 'Title',
+                      labelText: 'Task',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

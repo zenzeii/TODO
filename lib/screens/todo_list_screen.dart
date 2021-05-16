@@ -26,7 +26,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     _updateTodoList();
   }
 
-  // functions here
+  /// functions here
   _updateTodoList() {
     setState(() {
       _todoList = DatabaseHelper.instance.getTodoList();
@@ -39,7 +39,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     });
   }
 
-  // widgets here
+  /// widgets here
   Widget _toDoTile(Todo todo, int listLen) {
     return Padding(
       key: ValueKey(todo),
@@ -177,6 +177,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               itemCount: 1 + snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
+                  /// header
                   return Padding(
                     key: ValueKey(0),
                     padding:
@@ -258,45 +259,50 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     ),
                   );
                 }
+
+                /// Lists
+                /// index-1 because of header
                 return _toDoTile(
                     snapshot.data![index - 1], snapshot.data!.length);
               },
               onReorder: (oldIndex, newIndex) => setState(() {
                 if (newIndex != 0 && oldIndex != 0 && snapshot.data != null) {
-                  // because of header
+                  /// -1 because of header
                   oldIndex -= 1;
                   newIndex -= 1;
 
-                  // drag down
                   if (newIndex > oldIndex) {
+                    /// drag down
+                    /// correcting index for dragging down
                     newIndex -= 1;
 
-                    // new priority
+                    /// new priority for selected tile
                     snapshot.data![oldIndex].priority = newIndex + 1;
                     DatabaseHelper.instance
                         .updateTodo(snapshot.data![oldIndex]);
 
-                    // others one to the top
+                    /// move needed tiles one to the top
                     for (int i = oldIndex + 1; i < newIndex + 1; i++) {
                       snapshot.data![i].priority = i;
                       DatabaseHelper.instance.updateTodo(snapshot.data![i]);
                     }
                   }
 
-                  // drag up
                   if (oldIndex > newIndex) {
-                    // others one to the bot
+                    /// drag up
+                    /// move needed tiles one to the bottom
                     for (int i = newIndex; i < oldIndex + 1; i++) {
                       snapshot.data![i].priority = i + 2;
                       DatabaseHelper.instance.updateTodo(snapshot.data![i]);
                     }
-                    // new priority
+
+                    /// move selected tile to new position
                     snapshot.data![oldIndex].priority = newIndex + 1;
                     DatabaseHelper.instance
                         .updateTodo(snapshot.data![oldIndex]);
                   }
 
-                  // this is to prevent to flicker (reset positions until updateTODOList)
+                  /// prevent flicker ( =reset positions until _updateTodoList())
                   final tile = snapshot.data!.removeAt(oldIndex);
                   snapshot.data?.insert(newIndex, tile);
 

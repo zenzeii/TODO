@@ -52,9 +52,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
           ),
         ),
         subtitle: Text(
-          _dateFormatter.format(todo.date) +
-              ' • Position ' +
-              todo.priority.toString(),
+          _dateFormatter.format(todo.date),
           style: GoogleFonts.poppins(),
         ),
         trailing: deleteMode

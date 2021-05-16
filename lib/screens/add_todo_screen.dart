@@ -7,7 +7,8 @@ class AddTodoScreen extends StatefulWidget {
   final Function updateTodoList;
   final int todoListLen;
 
-  const AddTodoScreen({Key key, this.updateTodoList, this.todoListLen});
+  const AddTodoScreen(
+      {Key? key, required this.updateTodoList, required this.todoListLen});
 
   @override
   _AddTodoScreenState createState() => _AddTodoScreenState();
@@ -27,12 +28,12 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   }
 
   _selectDate() async {
-    final DateTime date = await showDatePicker(
+    final DateTime date = (await showDatePicker(
       context: context,
       initialDate: _date,
       firstDate: DateTime.now(),
       lastDate: DateTime(3000),
-    );
+    ))!;
     if (date != null) {
       setState(() {
         _date = date;
@@ -42,9 +43,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   }
 
   _submit() {
-    if (_formkey.currentState.validate()) {
+    if (_formkey.currentState!.validate()) {
       setState(() {
-        _formkey.currentState.save();
+        _formkey.currentState!.save();
         Todo todo = Todo(
             title: _title,
             date: _date,
@@ -111,9 +112,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: TextFormField(
-                    validator: (input) => input.trim().isEmpty ? '' : null,
+                    validator: (input) => input!.trim().isEmpty ? '' : null,
                     initialValue: _title,
-                    onSaved: (input) => _title = input,
+                    onSaved: (input) => _title = input!,
                     autofocus: true,
                     textCapitalization: TextCapitalization.sentences,
                     style: TextStyle(fontSize: 18),
@@ -130,7 +131,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: TextFormField(
-                    validator: (input) => input.trim().isEmpty ? '' : null,
+                    validator: (input) => input!.trim().isEmpty ? '' : null,
                     controller: _dateController,
                     showCursor: true,
                     readOnly: true,

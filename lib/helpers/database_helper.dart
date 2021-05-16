@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._instance();
-  static Database _db;
+  static Database? _db;
 
   DatabaseHelper._instance();
 
@@ -19,7 +19,7 @@ class DatabaseHelper {
   String colStatus = 'status';
   String colPriority = 'priority';
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_db == null) {
       _db = await _initDb();
     }
@@ -40,7 +40,7 @@ class DatabaseHelper {
   }
 
   Future<List<Map<String, dynamic>>> gettodoMapList() async {
-    Database db = await this.db;
+    Database db = (await this.db)!;
     final List<Map<String, dynamic>> result = await db.query(todoTables);
     return result;
   }
@@ -61,20 +61,20 @@ class DatabaseHelper {
   }
 
   Future<int> insertTodo(Todo todo) async {
-    Database db = await this.db;
+    Database db = (await this.db)!;
     final int result = await db.insert(todoTables, todo.toMap());
     return result;
   }
 
   Future<int> updateTodo(Todo todo) async {
-    Database db = await this.db;
+    Database db = (await this.db)!;
     final int result = await db.update(todoTables, todo.toMap(),
         where: '$colId = ?', whereArgs: [todo.id]);
     return result;
   }
 
   Future<int> deleteTodo(int id) async {
-    Database db = await this.db;
+    Database db = (await this.db)!;
     final int result =
         await db.delete(todoTables, where: '$colId = ?', whereArgs: [id]);
     return result;

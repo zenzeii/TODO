@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TodoListScreen extends StatefulWidget {
-  const TodoListScreen({Key key}) : super(key: key);
+  const TodoListScreen({Key? key}) : super(key: key);
 
   @override
   _TodoListScreenState createState() => _TodoListScreenState();
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  Future<List<Todo>> _todoList;
+  late Future<List<Todo>> _todoList;
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
   bool deleteMode = false;
 
@@ -26,6 +26,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     _updateTodoList();
   }
 
+  // functions here
   _updateTodoList() {
     setState(() {
       _todoList = DatabaseHelper.instance.getTodoList();
@@ -38,6 +39,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     });
   }
 
+  // widgets here
   Widget _toDoTile(Todo todo, int listLen) {
     return Padding(
       key: ValueKey(todo),
@@ -65,7 +67,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 activeColor: Color(0xff3DDC84),
                 onChanged: (value) {
                   setState(() {
-                    todo.status = value ? 1 : 0;
+                    todo.status = value! ? 1 : 0;
                     DatabaseHelper.instance.updateTodo(todo);
                     _updateTodoList();
                   });
@@ -91,7 +93,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       body: FutureBuilder(
         future: _todoList,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.data == null) {
             return Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 40.0, vertical: 80),
@@ -132,9 +134,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 MaterialPageRoute(
                                   builder: (_) => AddTodoScreen(
                                     updateTodoList: _updateTodoList,
-                                    todoListLen: snapshot.hasData
-                                        ? snapshot.data.length
-                                        : 0,
+                                    todoListLen: 0,
                                   ),
                                 ),
                               ),
@@ -171,136 +171,138 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ),
             );
-          }
-
-          return ReorderableListView.builder(
-            padding: EdgeInsets.symmetric(),
-            itemCount: 1 + snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (index == 0) {
-                return Padding(
-                  key: ValueKey(0),
-                  padding:
-                      const EdgeInsets.only(left: 40.0, right: 40.0, top: 80),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => AboutScreen(),
+          } else {
+            return ReorderableListView.builder(
+              padding: EdgeInsets.symmetric(),
+              itemCount: 1 + snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return Padding(
+                    key: ValueKey(0),
+                    padding:
+                        const EdgeInsets.only(left: 40.0, right: 40.0, top: 80),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => AboutScreen(),
+                                ),
+                              ),
+                              child: Text(
+                                "TODO",
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            child: Text(
-                              "TODO",
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Expanded(child: SizedBox()),
-                          GestureDetector(
-                            onLongPress: _toggleDeleteMode,
-                            child: IconButton(
-                              icon: deleteMode
-                                  ? Icon(
-                                      Icons.check,
-                                      color: Color(0xff3DDC84),
-                                    )
-                                  : Icon(
-                                      Icons.add,
-                                    ),
-                              onPressed: () => deleteMode
-                                  ? _toggleDeleteMode()
-                                  : Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => AddTodoScreen(
-                                          updateTodoList: _updateTodoList,
-                                          todoListLen: snapshot.data.length,
+                            Expanded(child: SizedBox()),
+                            GestureDetector(
+                              onLongPress: _toggleDeleteMode,
+                              child: IconButton(
+                                icon: deleteMode
+                                    ? Icon(
+                                        Icons.check,
+                                        color: Color(0xff3DDC84),
+                                      )
+                                    : Icon(
+                                        Icons.add,
+                                      ),
+                                onPressed: () => deleteMode
+                                    ? _toggleDeleteMode()
+                                    : Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => AddTodoScreen(
+                                            updateTodoList: _updateTodoList,
+                                            todoListLen: snapshot.data.length,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      snapshot.data.length == 0
-                          ? Container(
-                              alignment: AlignmentDirectional.center,
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.5,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "• tap '+' to add new task \n"
-                                    "• tap task tile to edit task \n"
-                                    "• tap 'TODO' to learn about us \n"
-                                    "• tap & hold task tile to edit priority\n"
-                                    "• tap & hold '+' to switch to delete mode\n"
-                                    "• tap task tile checkbox to mark as done",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
                               ),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                );
-              }
-              return _toDoTile(snapshot.data[index - 1], snapshot.data.length);
-            },
-            onReorder: (oldIndex, newIndex) => setState(() {
-              if (newIndex != 0 && oldIndex != 0) {
-                // because of header
-                oldIndex -= 1;
-                newIndex -= 1;
-
-                // drag down
-                if (newIndex > oldIndex) {
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        snapshot.data.length == 0
+                            ? Container(
+                                alignment: AlignmentDirectional.center,
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "• tap '+' to add new task \n"
+                                      "• tap task tile to edit task \n"
+                                      "• tap 'TODO' to learn about us \n"
+                                      "• tap & hold task tile to edit priority\n"
+                                      "• tap & hold '+' to switch to delete mode\n"
+                                      "• tap task tile checkbox to mark as done",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  );
+                }
+                return _toDoTile(
+                    snapshot.data[index - 1], snapshot.data.length);
+              },
+              onReorder: (oldIndex, newIndex) => setState(() {
+                if (newIndex != 0 && oldIndex != 0) {
+                  // because of header
+                  oldIndex -= 1;
                   newIndex -= 1;
 
-                  // new priority
-                  snapshot.data[oldIndex].priority = newIndex + 1;
-                  DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
+                  // drag down
+                  if (newIndex > oldIndex) {
+                    newIndex -= 1;
 
-                  // others one to the top
-                  for (int i = oldIndex + 1; i < newIndex + 1; i++) {
-                    snapshot.data[i].priority = i;
-                    DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                    // new priority
+                    snapshot.data[oldIndex].priority = newIndex + 1;
+                    DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
+
+                    // others one to the top
+                    for (int i = oldIndex + 1; i < newIndex + 1; i++) {
+                      snapshot.data[i].priority = i;
+                      DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                    }
                   }
-                }
 
-                // drag up
-                if (oldIndex > newIndex) {
-                  // others one to the bot
-                  for (int i = newIndex; i < oldIndex + 1; i++) {
-                    snapshot.data[i].priority = i + 2;
-                    DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                  // drag up
+                  if (oldIndex > newIndex) {
+                    // others one to the bot
+                    for (int i = newIndex; i < oldIndex + 1; i++) {
+                      snapshot.data[i].priority = i + 2;
+                      DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                    }
+                    // new priority
+                    snapshot.data![oldIndex].priority = newIndex + 1;
+                    DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
                   }
-                  // new priority
-                  snapshot.data[oldIndex].priority = newIndex + 1;
-                  DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
+
+                  // this is to prevent to flicker (reset positions until updateTODOList)
+                  final tile = snapshot.data!.removeAt(oldIndex);
+                  snapshot.data?.insert(newIndex, tile);
+
+                  _updateTodoList();
                 }
-
-                // this is to prevent to flicker (reset positions until updateTODOList)
-                final tile = snapshot.data.removeAt(oldIndex);
-                snapshot.data.insert(newIndex, tile);
-
-                _updateTodoList();
-              }
-            }),
-          );
+              }),
+            );
+          }
         },
       ),
     );

@@ -1,12 +1,21 @@
 class Todo {
-  int id;
+  int? id;
   String title;
   DateTime date;
   int status;
   int priority;
 
-  Todo({this.title, this.date, this.status, this.priority});
-  Todo.withId({this.id, this.title, this.date, this.status, this.priority});
+  Todo(
+      {required this.title,
+      required this.date,
+      required this.status,
+      required this.priority});
+  Todo.withId(
+      {required this.id,
+      required this.title,
+      required this.date,
+      required this.status,
+      required this.priority});
 
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();

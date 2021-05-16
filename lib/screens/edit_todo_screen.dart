@@ -10,7 +10,10 @@ class EditTodoScreen extends StatefulWidget {
   final int todoListLen;
 
   const EditTodoScreen(
-      {Key key, this.todo, this.updateTodoList, this.todoListLen})
+      {Key? key,
+      required this.todo,
+      required this.updateTodoList,
+      required this.todoListLen})
       : super(key: key);
 
   @override
@@ -20,7 +23,7 @@ class EditTodoScreen extends StatefulWidget {
 class _EditTodoScreenState extends State<EditTodoScreen> {
   final _formkey = GlobalKey<FormState>();
   String _title = '';
-  int _priority;
+  //int? _priority;
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
@@ -28,21 +31,19 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.todo != null) {
-      _title = widget.todo.title;
-      _date = widget.todo.date;
-      _priority = widget.todo.priority;
-      _dateController.text = _dateFormatter.format(_date);
-    }
+    _title = widget.todo.title;
+    _date = widget.todo.date;
+    //_priority = widget.todo.priority;
+    _dateController.text = _dateFormatter.format(_date);
   }
 
   _selectDate() async {
-    final DateTime date = await showDatePicker(
+    final DateTime date = (await showDatePicker(
       context: context,
       initialDate: _date,
       firstDate: DateTime.now(),
       lastDate: DateTime(3000),
-    );
+    ))!;
     if (date != null) {
       setState(() {
         _date = date;
@@ -54,20 +55,23 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
   int _correctNewPriority(int newPrio) {
     if (newPrio > widget.todoListLen) {
       return widget.todoListLen;
-    }
-    if (newPrio < 1) {
+    } else if (newPrio < 1) {
       return 1;
+    } else {
+      return newPrio;
     }
   }
 
   _submit() {
-    if (_formkey.currentState.validate()) {
-      _formkey.currentState.save();
+    if (_formkey.currentState!.validate()) {
+      _formkey.currentState!.save();
 
-      Todo todo = Todo(title: _title, date: _date);
+      Todo todo = Todo(
+          title: _title,
+          date: _date,
+          status: widget.todo.status,
+          priority: widget.todo.priority);
       todo.id = widget.todo.id;
-      todo.status = widget.todo.status;
-      todo.priority = widget.todo.priority;
       DatabaseHelper.instance.updateTodo(todo);
       widget.updateTodoList();
       Navigator.pop(context);
@@ -75,7 +79,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
   }
 
   _delete() {
-    DatabaseHelper.instance.deleteTodo(widget.todo.id);
+    DatabaseHelper.instance.deleteTodo(widget.todo.id!);
     widget.updateTodoList();
     Navigator.pop(context);
   }
@@ -147,9 +151,9 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: TextFormField(
-                    validator: (input) => input.trim().isEmpty ? '' : null,
+                    validator: (input) => input!.trim().isEmpty ? '' : null,
                     initialValue: _title,
-                    onSaved: (input) => _title = input,
+                    onSaved: (input) => _title = input!,
                     autofocus: true,
                     textCapitalization: TextCapitalization.sentences,
                     style: TextStyle(fontSize: 18),
@@ -169,7 +173,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: TextFormField(
-                    validator: (input) => input.trim().isEmpty ? '' : null,
+                    validator: (input) => input!.trim().isEmpty ? '' : null,
                     controller: _dateController,
                     showCursor: true,
                     readOnly: true,

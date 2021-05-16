@@ -1,7 +1,8 @@
+import 'package:TODO/screens/license_screen.dart';
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatefulWidget {
-  const AboutScreen({Key key}) : super(key: key);
+  const AboutScreen({Key? key}) : super(key: key);
 
   @override
   _AboutScreenState createState() => _AboutScreenState();
@@ -53,7 +54,40 @@ class _AboutScreenState extends State<AboutScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  leading: Image.asset(
+                    'assets/ic_launcher.png',
+                    width: 56,
+                    height: 56,
+                  ),
+                  title: Text(
+                    'TODO',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  subtitle: Text('version 1.2'),
+                ),
                 Text("Made in Berlin"),
+                Container(
+                  child: Center(
+                    child: TextButton(
+                      onPressed: () {
+                        showLicensePage(
+                          context: context,
+                          applicationVersion: 'version 1.2',
+                          applicationIcon: Image.asset(
+                            'assets/ic_launcher.png',
+                            width: 56,
+                            height: 56,
+                          ),
+
+                          // applicationName: "App Name"
+                        );
+                      },
+                      child: Text('Show Licenses'),
+                    ),
+                  ),
+                )
               ],
             ),
           );

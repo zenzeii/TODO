@@ -146,23 +146,6 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     ),
                   ),
                 ),
-                /*
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    height: 65,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: FlatButton(
-                      child: Icon(Icons.check, color: Colors.white),
-                    ),
-                  ),
-                ),
-
-                 */
               ],
             ),
           );

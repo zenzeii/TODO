@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key key}) : super(key: key);
@@ -27,7 +25,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     children: [
                       Text(
                         "ABOUT",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
                         ),

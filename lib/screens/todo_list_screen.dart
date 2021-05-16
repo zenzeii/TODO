@@ -6,7 +6,6 @@ import 'package:TODO/screens/add_todo_screen.dart';
 import 'package:TODO/screens/edit_todo_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -47,11 +46,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
         contentPadding: EdgeInsets.symmetric(horizontal: 40),
         title: Text(
           todo.title,
-          style: GoogleFonts.poppins(),
         ),
         subtitle: Text(
           _dateFormatter.format(todo.date),
-          style: GoogleFonts.poppins(),
         ),
         trailing: deleteMode
             ? IconButton(
@@ -112,7 +109,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                         ),
                         child: Text(
                           "TODO",
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
                           ),
@@ -162,8 +159,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: Text(
                               "If this doesn't end please delete app data.",
-                              style: GoogleFonts.poppins(
-                                color: Colors.black,
+                              style: TextStyle(
                                 fontSize: 16,
                               ),
                             ),
@@ -200,7 +196,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             ),
                             child: Text(
                               "TODO",
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -252,7 +248,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                     "• tap & hold task tile to edit priority\n"
                                     "• tap & hold '+' to switch to delete mode\n"
                                     "• tap task tile checkbox to mark as done",
-                                    style: GoogleFonts.poppins(fontSize: 16),
+                                    style: TextStyle(fontSize: 16),
                                   ),
                                 ],
                               ),

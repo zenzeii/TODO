@@ -1,7 +1,6 @@
 import 'package:TODO/helpers/database_helper.dart';
 import 'package:TODO/models/todo_models.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class AddTodoScreen extends StatefulWidget {
@@ -75,7 +74,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     children: [
                       Text(
                         " ADD",
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
                         ),
@@ -117,10 +116,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     onSaved: (input) => _title = input,
                     autofocus: true,
                     textCapitalization: TextCapitalization.sentences,
-                    style: GoogleFonts.poppins(fontSize: 18),
+                    style: TextStyle(fontSize: 18),
                     decoration: InputDecoration(
                       errorStyle: TextStyle(height: 0),
-                      labelStyle: GoogleFonts.poppins(),
                       labelText: 'Task',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -137,10 +135,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     showCursor: true,
                     readOnly: true,
                     onTap: _selectDate,
-                    style: GoogleFonts.poppins(fontSize: 18),
+                    style: TextStyle(fontSize: 18),
                     decoration: InputDecoration(
                       errorStyle: TextStyle(height: 0),
-                      labelStyle: GoogleFonts.poppins(),
                       labelText: 'Deadline',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),

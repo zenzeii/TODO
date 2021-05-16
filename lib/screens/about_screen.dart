@@ -75,16 +75,9 @@ class _AboutScreenState extends State<AboutScreen> {
                   child: Center(
                     child: TextButton(
                       onPressed: () {
-                        showLicensePage(
+                        showOwnLicensePage(
                           context: context,
-                          applicationVersion: 'version 1.2',
-                          applicationIcon: Image.asset(
-                            'assets/ic_launcher.png',
-                            width: 56,
-                            height: 56,
-                          ),
-
-                          // applicationName: "App Name"
+                          applicationName: '',
                         );
                       },
                       child: Text('Show Licenses'),

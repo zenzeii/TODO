@@ -69,6 +69,9 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 Text("Made in Berlin"),
                 Container(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                ),
+                Container(
                   child: Center(
                     child: TextButton(
                       onPressed: () {

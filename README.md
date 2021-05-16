@@ -7,7 +7,7 @@ Simple Todo List App using Flutter.
 
 ## Screenshots
 
-| TODO List | ADD Task | EDIT Task | DRAG to reorder | SELECT to delete |
+| TODO List | ADD Task | EDIT Task | REORDER Task | DELETE Task |
 |---|---|---|---|---|
 | ![main_screen_light](https://raw.githubusercontent.com/zenzeii/TODO/master/for_github/todo_light.jpg) | ![add_screen_light](https://raw.githubusercontent.com/zenzeii/TODO/master/for_github/add_light.jpg) |  ![edit_screen_light](https://raw.githubusercontent.com/zenzeii/TODO/master/for_github/edit_light.jpg) | ![drag_screen_light](https://raw.githubusercontent.com/zenzeii/TODO/master/for_github/drag_light.jpg) | ![deletemode_light](https://raw.githubusercontent.com/zenzeii/TODO/master/for_github/deletemode_light.jpg) |
 

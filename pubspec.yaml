@@ -21,7 +21,30 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: google_fonts/Poppins-Regular.ttf
+        - asset: google_fonts/Poppins-Black.ttf
+        - asset: google_fonts/Poppins-BlackItalic.ttf
+        - asset: google_fonts/Poppins-Bold.ttf
+        - asset: google_fonts/Poppins-BoldItalic.ttf
+        - asset: google_fonts/Poppins-ExtraBold.ttf
+        - asset: google_fonts/Poppins-ExtraBoldItalic.ttf
+        - asset: google_fonts/Poppins-ExtraLight.ttf
+        - asset: google_fonts/Poppins-ExtraLightItalic.ttf
+        - asset: google_fonts/Poppins-Italic.ttf
+        - asset: google_fonts/Poppins-Light.ttf
+        - asset: google_fonts/Poppins-LightItalic.ttf
+        - asset: google_fonts/Poppins-Medium.ttf
+        - asset: google_fonts/Poppins-MediumItalic.ttf
+        - asset: google_fonts/Poppins-Regular.ttf
+        - asset: google_fonts/Poppins-SemiBold.ttf
+        - asset: google_fonts/Poppins-SemiBoldItalic.ttf
+        - asset: google_fonts/Poppins-Thin.ttf
+        - asset: google_fonts/Poppins-ThinItalic.ttf
 
-  # assets:
+assets:
+  - google_fonts/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

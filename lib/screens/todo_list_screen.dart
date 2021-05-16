@@ -47,9 +47,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         contentPadding: EdgeInsets.symmetric(horizontal: 40),
         title: Text(
           todo.title,
-          style: GoogleFonts.poppins(
-            color: Colors.black,
-          ),
+          style: GoogleFonts.poppins(),
         ),
         subtitle: Text(
           _dateFormatter.format(todo.date),
@@ -59,7 +57,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ? IconButton(
                 icon: Icon(
                   Icons.delete_outline,
-                  color: Colors.black,
                 ),
                 onPressed: () {
                   setState(() {
@@ -130,7 +127,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                               )
                             : Icon(
                                 Icons.add,
-                                color: Colors.black,
                               ),
                         onPressed: () => deleteMode
                             ? _toggleDeleteMode()
@@ -221,7 +217,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                     )
                                   : Icon(
                                       Icons.add,
-                                      color: Colors.black,
                                     ),
                               onPressed: () => deleteMode
                                   ? _toggleDeleteMode()

@@ -114,7 +114,6 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                       IconButton(
                         icon: Icon(
                           Icons.delete_outline,
-                          color: Colors.black,
                         ),
                         onPressed: _delete,
                       ),

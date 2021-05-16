@@ -15,7 +15,7 @@ class AddTodoScreen extends StatefulWidget {
 }
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String _title = '';
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
@@ -34,18 +34,16 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       firstDate: DateTime.now(),
       lastDate: DateTime(3000),
     ))!;
-    if (date != null) {
-      setState(() {
-        _date = date;
-      });
-      _dateController.text = _dateFormatter.format(_date);
-    }
+    setState(() {
+      _date = date;
+    });
+    _dateController.text = _dateFormatter.format(_date);
   }
 
-  _submit() {
-    if (_formkey.currentState!.validate()) {
+  _submitTask() {
+    if (_formKey.currentState!.validate()) {
       setState(() {
-        _formkey.currentState!.save();
+        _formKey.currentState!.save();
         Todo todo = Todo(
             title: _title,
             date: _date,
@@ -66,6 +64,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
+            ///
+            /// Header
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Column(
@@ -93,7 +93,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                           Icons.check,
                           color: Color(0xff3DDC84),
                         ),
-                        onPressed: _submit,
+                        onPressed: _submitTask,
                       ),
                     ],
                   ),
@@ -105,9 +105,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
             );
           }
           return Form(
-            key: _formkey,
+            key: _formKey,
             child: Column(
               children: [
+                ///
+                /// Input Task name
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -127,6 +129,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     ),
                   ),
                 ),
+
+                ///
+                /// Input Deadline
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),

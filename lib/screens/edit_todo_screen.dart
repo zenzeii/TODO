@@ -50,7 +50,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     }
   }
 
-  _submit() {
+  _submitTask() {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
 
@@ -66,7 +66,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     }
   }
 
-  _delete() {
+  _deleteTask() {
     DatabaseHelper.instance.deleteTodo(widget.todo.id!);
     widget.updateTodoList();
     Navigator.pop(context);
@@ -99,7 +99,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                         icon: Icon(
                           Icons.delete_outline,
                         ),
-                        onPressed: _delete,
+                        onPressed: _deleteTask,
                       ),
                       IconButton(
                         icon: Icon(
@@ -113,7 +113,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                           Icons.check,
                           color: Color(0xff3DDC84),
                         ),
-                        onPressed: _submit,
+                        onPressed: _submitTask,
                       ),
                     ],
                   ),

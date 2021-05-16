@@ -59,7 +59,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ),
                 onPressed: () {
                   setState(() {
-                    DatabaseHelper.instance.deleteTodo(todo.id);
+                    DatabaseHelper.instance.deleteTodo(todo.id!);
                   });
                   _updateTodoList();
                 })
@@ -90,7 +90,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
+      body: FutureBuilder<List<Todo>>(
         future: _todoList,
         builder: (context, snapshot) {
           if (snapshot.data == null) {
@@ -174,7 +174,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
           } else {
             return ReorderableListView.builder(
               padding: EdgeInsets.symmetric(),
-              itemCount: 1 + snapshot.data.length,
+              itemCount: 1 + snapshot.data!.length,
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return Padding(
@@ -220,7 +220,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                         MaterialPageRoute(
                                           builder: (_) => AddTodoScreen(
                                             updateTodoList: _updateTodoList,
-                                            todoListLen: snapshot.data.length,
+                                            todoListLen: snapshot.data!.length,
                                           ),
                                         ),
                                       ),
@@ -231,7 +231,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                         SizedBox(
                           height: 30,
                         ),
-                        snapshot.data.length == 0
+                        snapshot.data!.length == 0
                             ? Container(
                                 alignment: AlignmentDirectional.center,
                                 width: MediaQuery.of(context).size.width,
@@ -259,10 +259,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   );
                 }
                 return _toDoTile(
-                    snapshot.data[index - 1], snapshot.data.length);
+                    snapshot.data![index - 1], snapshot.data!.length);
               },
               onReorder: (oldIndex, newIndex) => setState(() {
-                if (newIndex != 0 && oldIndex != 0) {
+                if (newIndex != 0 && oldIndex != 0 && snapshot.data != null) {
                   // because of header
                   oldIndex -= 1;
                   newIndex -= 1;
@@ -272,13 +272,14 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     newIndex -= 1;
 
                     // new priority
-                    snapshot.data[oldIndex].priority = newIndex + 1;
-                    DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
+                    snapshot.data![oldIndex].priority = newIndex + 1;
+                    DatabaseHelper.instance
+                        .updateTodo(snapshot.data![oldIndex]);
 
                     // others one to the top
                     for (int i = oldIndex + 1; i < newIndex + 1; i++) {
-                      snapshot.data[i].priority = i;
-                      DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                      snapshot.data![i].priority = i;
+                      DatabaseHelper.instance.updateTodo(snapshot.data![i]);
                     }
                   }
 
@@ -286,12 +287,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   if (oldIndex > newIndex) {
                     // others one to the bot
                     for (int i = newIndex; i < oldIndex + 1; i++) {
-                      snapshot.data[i].priority = i + 2;
-                      DatabaseHelper.instance.updateTodo(snapshot.data[i]);
+                      snapshot.data![i].priority = i + 2;
+                      DatabaseHelper.instance.updateTodo(snapshot.data![i]);
                     }
                     // new priority
                     snapshot.data![oldIndex].priority = newIndex + 1;
-                    DatabaseHelper.instance.updateTodo(snapshot.data[oldIndex]);
+                    DatabaseHelper.instance
+                        .updateTodo(snapshot.data![oldIndex]);
                   }
 
                   // this is to prevent to flicker (reset positions until updateTODOList)

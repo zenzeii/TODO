@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class InputDeadline extends StatelessWidget {
+class InputTaskDeadline extends StatelessWidget {
   final dynamic function;
   TextEditingController textEditingController;
 
-  InputDeadline({required this.function, required this.textEditingController});
+  InputTaskDeadline(
+      {required this.function, required this.textEditingController});
 
   @override
   Widget build(BuildContext context) {

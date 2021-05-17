@@ -1,5 +1,5 @@
-import 'package:TODO/components/inputDeadline.dart';
-import 'package:TODO/components/add_task_header.dart';
+import 'package:TODO/components/input_task_deadline.dart';
+import 'package:TODO/components/header_add_task.dart';
 import 'package:TODO/components/input_task_name.dart';
 import 'package:TODO/helpers/database_helper.dart';
 import 'package:TODO/models/todo_models.dart';
@@ -18,9 +18,9 @@ class AddTodoScreen extends StatefulWidget {
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  TextEditingController _taskNameController = TextEditingController();
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
-  TextEditingController _taskNameController = TextEditingController();
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
 
   @override
@@ -29,7 +29,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     _dateController.text = _dateFormatter.format(_date);
   }
 
-  void _selectDate() async {
+  _selectDate() async {
     final DateTime date = (await showDatePicker(
       context: context,
       initialDate: _date,
@@ -42,7 +42,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     _dateController.text = _dateFormatter.format(_date);
   }
 
-  void _addTask() {
+  _addTask() {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _formKey.currentState!.save();
@@ -68,9 +68,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
-            return AddTaskHeader(function: () {
-              _addTask();
-            });
+            return HeaderAddTask(function: _addTask);
           }
           return Form(
             key: _formKey,
@@ -79,7 +77,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                 InputTaskName(
                   textEditingController: _taskNameController,
                 ),
-                InputDeadline(
+                InputTaskDeadline(
                   function: _selectDate,
                   textEditingController: _dateController,
                 )

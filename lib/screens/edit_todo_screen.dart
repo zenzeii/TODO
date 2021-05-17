@@ -1,3 +1,6 @@
+import 'package:TODO/components/header_edit_task.dart';
+import 'package:TODO/components/input_task_deadline.dart';
+import 'package:TODO/components/input_task_name.dart';
 import 'package:TODO/helpers/database_helper.dart';
 import 'package:TODO/models/todo_models.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +25,7 @@ class EditTodoScreen extends StatefulWidget {
 
 class _EditTodoScreenState extends State<EditTodoScreen> {
   final _formkey = GlobalKey<FormState>();
-  String _title = '';
+  TextEditingController _taskNameController = TextEditingController();
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
@@ -30,7 +33,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
   @override
   void initState() {
     super.initState();
-    _title = widget.todo.title;
+    _taskNameController.text = widget.todo.title;
     _date = widget.todo.date;
     _dateController.text = _dateFormatter.format(_date);
   }
@@ -50,12 +53,12 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
     }
   }
 
-  _submitTask() {
+  _editTask() {
     if (_formkey.currentState!.validate()) {
       _formkey.currentState!.save();
 
       Todo todo = Todo(
-          title: _title,
+          title: _taskNameController.text,
           date: _date,
           status: widget.todo.status,
           priority: widget.todo.priority);
@@ -80,95 +83,22 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
         itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Text(
-                        "EDIT",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Expanded(child: SizedBox()),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete_outline,
-                        ),
-                        onPressed: _deleteTask,
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          color: Color(0xffff351a),
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.check,
-                          color: Color(0xff3DDC84),
-                        ),
-                        onPressed: _submitTask,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  )
-                ],
-              ),
+            return HeaderEditTask(
+              editFunction: _editTask,
+              deleteFunction: _deleteTask,
             );
           }
           return Form(
             key: _formkey,
             child: Column(
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  child: TextFormField(
-                    validator: (input) => input!.trim().isEmpty ? '' : null,
-                    initialValue: _title,
-                    onSaved: (input) => _title = input!,
-                    autofocus: true,
-                    textCapitalization: TextCapitalization.sentences,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(height: 0),
-                      labelText: 'Task',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                  ),
+                InputTaskName(
+                  textEditingController: _taskNameController,
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  child: TextFormField(
-                    validator: (input) => input!.trim().isEmpty ? '' : null,
-                    controller: _dateController,
-                    showCursor: true,
-                    readOnly: true,
-                    onTap: _selectDate,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(height: 0),
-                      labelText: 'Deadline',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(08),
-                      ),
-                    ),
-                  ),
-                ),
+                InputTaskDeadline(
+                  function: _selectDate,
+                  textEditingController: _dateController,
+                )
               ],
             ),
           );

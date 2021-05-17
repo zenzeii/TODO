@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class AddTaskHeader extends StatelessWidget {
+class HeaderAddTask extends StatelessWidget {
   final dynamic function;
 
-  AddTaskHeader({required this.function});
+  HeaderAddTask({required this.function});
 
   @override
   Widget build(BuildContext context) {

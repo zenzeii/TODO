@@ -917,22 +917,29 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           shadowColor: Colors.transparent,
-          title: Text(
-            title,
-            style: TextStyle(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 40),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
             ),
           ),
           backgroundColor: Theme.of(context).bottomAppBarColor,
           actions: [
-            IconButton(
-              icon: Icon(
-                Icons.close,
-                color: Colors.red,
+            Padding(
+              padding: const EdgeInsets.only(right: 40),
+              child: IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
             )
           ],
         ),
@@ -945,7 +952,14 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
                 locale: const Locale('en', 'US'),
                 context: context,
                 child: Scrollbar(
-                  child: ListView(padding: padding, children: listWidgets),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: ListView(
+                      padding: padding,
+                      children: listWidgets,
+                      physics: BouncingScrollPhysics(),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -1454,21 +1468,28 @@ class _MasterPage extends StatelessWidget {
     return Scaffold(
       // license list screen
       appBar: AppBar(
+        toolbarHeight: 140,
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).bottomAppBarColor,
         shadowColor: Colors.transparent,
         title: Padding(
-          padding: EdgeInsets.only(left: 40),
+          padding: EdgeInsets.only(
+            left: 25,
+          ),
           child: Text(
-            'Licenses',
+            'Licenses'.toUpperCase(),
             style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
               color: Theme.of(context).textTheme.bodyText1!.color,
             ),
           ),
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 40),
+            padding: EdgeInsets.only(
+              right: 40,
+            ),
             child: IconButton(
               icon: Icon(Icons.close),
               color: Colors.red,

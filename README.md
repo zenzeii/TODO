@@ -3,7 +3,7 @@
 # <p align="center">TODO</p>
 
 Simple Todo List App using Flutter.
-[Click here to download APK (version 1.2.2)](https://github.com/zenzeii/TODO/blob/master/app-release.apk?raw=true)
+[Click here to download APK (version 1.2.3)](https://github.com/zenzeii/TODO/blob/master/for_github/app-release.apk?raw=true)
 
 ## Screenshots
 

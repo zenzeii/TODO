@@ -661,6 +661,7 @@ class _PackagesViewState extends State<_PackagesView> {
     final bool drawSelection,
   ) {
     return ListView(
+      physics: BouncingScrollPhysics(),
       children: <Widget>[
         widget.about,
         ...data.packages

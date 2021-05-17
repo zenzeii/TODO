@@ -1,3 +1,6 @@
+import 'package:TODO/components/inputDeadline.dart';
+import 'package:TODO/components/add_task_header.dart';
+import 'package:TODO/components/input_task_name.dart';
 import 'package:TODO/helpers/database_helper.dart';
 import 'package:TODO/models/todo_models.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +9,6 @@ import 'package:intl/intl.dart';
 class AddTodoScreen extends StatefulWidget {
   final Function updateTodoList;
   final int todoListLen;
-
   const AddTodoScreen(
       {Key? key, required this.updateTodoList, required this.todoListLen});
 
@@ -15,10 +17,10 @@ class AddTodoScreen extends StatefulWidget {
 }
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
-  final _formKey = GlobalKey<FormState>();
-  String _title = '';
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
+  TextEditingController _taskNameController = TextEditingController();
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
 
   @override
@@ -27,7 +29,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     _dateController.text = _dateFormatter.format(_date);
   }
 
-  _selectDate() async {
+  void _selectDate() async {
     final DateTime date = (await showDatePicker(
       context: context,
       initialDate: _date,
@@ -40,12 +42,12 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     _dateController.text = _dateFormatter.format(_date);
   }
 
-  _submitTask() {
+  void _addTask() {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _formKey.currentState!.save();
         Todo todo = Todo(
-            title: _title,
+            title: _taskNameController.text,
             date: _date,
             status: 0,
             priority: widget.todoListLen + 1);
@@ -53,6 +55,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         widget.updateTodoList();
         Navigator.pop(context);
       });
+    } else {
+      _formKey.currentState!.validate();
     }
   }
 
@@ -64,93 +68,21 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
-            ///
-            /// Header
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Text(
-                        " ADD",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Expanded(child: SizedBox()),
-                      IconButton(
-                        icon: Icon(
-                          Icons.close,
-                          color: Color(0xffff351a),
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.check,
-                          color: Color(0xff3DDC84),
-                        ),
-                        onPressed: _submitTask,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  )
-                ],
-              ),
-            );
+            return AddTaskHeader(function: () {
+              _addTask();
+            });
           }
           return Form(
             key: _formKey,
             child: Column(
               children: [
-                ///
-                /// Input Task name
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  child: TextFormField(
-                    validator: (input) => input!.trim().isEmpty ? '' : null,
-                    initialValue: _title,
-                    onSaved: (input) => _title = input!,
-                    autofocus: true,
-                    textCapitalization: TextCapitalization.sentences,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(height: 0),
-                      labelText: 'Task',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
+                InputTaskName(
+                  textEditingController: _taskNameController,
                 ),
-
-                ///
-                /// Input Deadline
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  child: TextFormField(
-                    validator: (input) => input!.trim().isEmpty ? '' : null,
-                    controller: _dateController,
-                    showCursor: true,
-                    readOnly: true,
-                    onTap: _selectDate,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      errorStyle: TextStyle(height: 0),
-                      labelText: 'Deadline',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                ),
+                InputDeadline(
+                  function: _selectDate,
+                  textEditingController: _dateController,
+                )
               ],
             ),
           );

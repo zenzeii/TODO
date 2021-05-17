@@ -606,7 +606,7 @@ class _PackagesViewState extends State<_PackagesView> {
                     return Center(
                       child: Material(
                         color: Theme.of(context).cardColor,
-                        elevation: 4.0,
+                        elevation: 0.0,
                         child: Container(
                           constraints:
                               BoxConstraints.loose(const Size.fromWidth(600.0)),
@@ -914,8 +914,8 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
       page = Scaffold(
         // license screen
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           shadowColor: Colors.transparent,
-          centerTitle: true,
           title: Text(
             title,
             style: TextStyle(
@@ -934,12 +934,10 @@ class _PackageLicensePageState extends State<_PackageLicensePage> {
               },
             )
           ],
-          leading: Container(),
         ),
         body: Center(
           child: Material(
             color: theme.cardColor,
-            elevation: 4.0,
             child: Container(
               constraints: BoxConstraints.loose(const Size.fromWidth(600.0)),
               child: Localizations.override(
@@ -1455,42 +1453,52 @@ class _MasterPage extends StatelessWidget {
     return Scaffold(
       // license list screen
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).bottomAppBarColor,
         shadowColor: Colors.transparent,
-        centerTitle: true,
-        title: Text(
-          'Licenses',
-          style: TextStyle(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+        title: Padding(
+          padding: EdgeInsets.only(left: 40),
+          child: Text(
+            'Licenses',
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.close),
-            color: Colors.red,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => TodoListScreen(),
-                ),
-              );
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => AboutScreen(),
-                ),
-              );
-            },
+          Padding(
+            padding: EdgeInsets.only(right: 40),
+            child: IconButton(
+              icon: Icon(Icons.close),
+              color: Colors.red,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => TodoListScreen(),
+                  ),
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AboutScreen(),
+                  ),
+                );
+              },
+            ),
           )
         ],
       ),
-      body: masterViewBuilder!(context, false),
+      body: Container(
+        color: Theme.of(context).bottomAppBarColor,
+        padding: EdgeInsets.symmetric(horizontal: 40),
+        child: masterViewBuilder!(context, false),
+      ),
     );
   }
 }
 
-const double _kCardElevation = 4.0;
+const double _kCardElevation = 0.0;
 const double _kMasterViewWidth = 320.0;
 const double _kDetailPageFABlessGutterWidth = 40.0;
 const double _kDetailPageFABGutterWidth = 84.0;
